@@ -5,15 +5,38 @@ import CartContainer from "./components/CartContainer";
 // items
 import cartItems from "./cart-items";
 // redux stuff
+import {createStore} from 'redux'
+import {DECREASE,INCREASE} from './actions'
+import reducer from './reducer'
+import {Provider} from 'react-redux'
+
+
+
+
+
+//initial store
+const initialStore={
+  cart:cartItems,
+  total:10,
+  amount:5
+
+}
+
+///reducer
+
+const store=createStore(reducer,initialStore)
+const {getState,dipatch}=store
+
+
 
 function App() {
   // cart setup
 
   return (
-    <main>
-      <Navbar />
-      <CartContainer cart={cartItems} />
-    </main>
+    <Provider store={store}>
+      <Navbar  />
+      <CartContainer />
+    </Provider>
   );
 }
 
