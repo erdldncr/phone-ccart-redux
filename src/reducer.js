@@ -1,5 +1,13 @@
-import {DECREASE,INCREASE,CLEAR_CART,REMOVE,GET_TOTALS} from './actions'
-export default function reducer(state,action){
+import {DECREASE,INCREASE,CLEAR_CART,REMOVE,GET_TOTALS,TOGGLE_AMOUNT} from './actions'
+import cartItems from './cart-items'
+
+export const initialStore={
+  cart:cartItems,
+  total:0,
+  amount:0
+
+}
+export  function reducer(state=initialStore,action){
     
      switch(action.type){
       case CLEAR_CART:{
@@ -15,13 +23,29 @@ export default function reducer(state,action){
         return {...state,cart:tempCart}
       }
       case DECREASE:{
-        let tempCart=state.cart.map(item=>item.id===action.payload.id?{...item,amount:item.amount>0?item.amount-1:0}:item)
-        .filter(item=>item.amount!==0)
+        let tempCart=state.cart.map(item=>item.id===action.payload.id?{...item,amount:item.amount-1}:item)
+        
         return {...state,cart:tempCart}
       }
       case GET_TOTALS:{
         return {...state,total:state.cart.reduce((sum,item)=>sum+(item.amount*item.price),0).toFixed(2)}
-      }      
+      }
+      case TOGGLE_AMOUNT:{
+ 
+        return {...state,cart:state.cart.map(item=>{
+            if(item.id===action.payload.id){
+               if(action.payload.toggle==='increase'){
+                return {...item,amount:item.amount+1}
+               }
+               if(action.payload.toggle==='decrease'){
+                return {...item,amount:item.amount-1}
+               }
+            }else{
+
+          return item
+        }
+
+      })}}     
        default:{
          return state
        }

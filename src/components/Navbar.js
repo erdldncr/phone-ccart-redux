@@ -19,8 +19,8 @@ const Navbar = ({amount}) => {
   );
 };
 
-const mapStateToProps=({amount})=>{
-
-    return {amount}
+const mapStateToProps=({amount,cart})=>{
+  
+    return {amount:cart.reduce((a,b)=>a+b.amount,0)}
 }
 export default connect(mapStateToProps)(Navbar);
